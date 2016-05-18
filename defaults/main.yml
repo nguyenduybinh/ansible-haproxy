@@ -1,0 +1,23 @@
+---
+# defaults file for ha_proxy
+front_end_name: web
+frontend_bindaddress: '*'
+frontend_port: 80
+backend_name: web_pool
+backend_mode: http
+blance_method: roundrobin
+backend_servers:
+     - name: web1
+       address: 192.168.98.10
+       port: 80
+     - name: web2
+       address: 192.168.98.11
+       port: 80
+haproxy:
+  config:
+    cnfpath: /etc/haproxy/haproxy.cfg
+    enabled: 1
+    listen_address: 0.0.0.0
+    listen_port: 8080
+  service: haproxy
+  pkg: haproxy

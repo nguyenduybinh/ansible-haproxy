@@ -1,0 +1,21 @@
+---
+# tasks file for ha_proxy
+ - name: add repo
+   apt_repository: repo='ppa:vbernat/haproxy-1.6'
+ - name: install HAproxy
+   apt: 
+     name: "{{ haproxy['pkg'] }}"
+     state: present 
+     update_cache: yes
+ - name: configure HAproxy
+   template: src="haproxy.cfg.j2" dest="{{ haproxy['config']['cnfpath'] }}" mode=0644
+   notify:
+     - restart haproxy service
+ - name: enable haproxy
+   template: src="haproxy.default.j2" dest=/etc/default/haproxy mode=0644
+   notify:
+     - restart haproxy service
+ - name: start haproxy server
+   service:
+     name: "{{ haproxy['service'] }}"
+     state: started 
